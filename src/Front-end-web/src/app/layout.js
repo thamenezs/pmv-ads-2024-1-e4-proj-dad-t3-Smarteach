@@ -1,7 +1,7 @@
 import { Poppins } from "next/font/google";
 import "./globals.css";
 import NextAuthSessionProvider from "@/providers/session-provider";
-import Header from "@/components/header";
+import Header from "../components/Header/index.jsx";
 import { ReactQueryProvider } from "@/providers/query-client-provider";
 
 const poppins = Poppins({
