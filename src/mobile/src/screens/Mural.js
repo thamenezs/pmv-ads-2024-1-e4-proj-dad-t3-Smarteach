@@ -1,113 +1,166 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View, Image, ScrollView, TouchableOpacity, Dimensions, } from 'react-native';
-import React from 'react';
-import Icon from 'react-native-vector-icons/FontAwesome';
+import React, { useEffect, useState } from "react";
+import {
+  StyleSheet,
+  Text,
+  View,
+  ScrollView,
+  FlatList,
+  Image,
+} from "react-native";
+
+import { useIsFocused, useNavigation, useRoute } from "@react-navigation/native";
+import { Appbar } from "react-native-paper";
+import { getClassProfile } from '../services/turmas.services';
 
 export default function Mural() {
-  return (
-    <>
-      <View style={styles.container}>
-        <StatusBar style="auto" />
+  const route = useRoute();
+  const navigation = useNavigation();
+  const { turma } = route.params;
+  const [classProfileData, setClassProfileData] = useState([]);
+  const isFocused = useIsFocused();
 
-        <View style={styles.navbar}>
-          <TouchableOpacity>
-            <Icon name="bars" size={28} color="#004AAD" />
-          </TouchableOpacity>
-          <Text style={{ color: '#004AAD', fontSize: 25, fontWeight: 700, }}>MURAL</Text>
-          <TouchableOpacity>
-            <Icon name="sign-in" size={28} color="#004AAD" />
-          </TouchableOpacity>
-        </View>
-        <ScrollView contentContainerStyle={styles.scrollContainer}>
+  useEffect(() => {
+    fetchData();
+  }, [isFocused]);
 
+  const fetchData = () => {
+    getClassProfile(turma._id).then((data) => setClassProfileData(data));
+  };
 
-          <View style={{ flex: 1, alignItems: 'center', }}>
-            <View style={{ height: 35, width: 340, marginTop: 12, backgroundColor: '#004AAD', borderRadius: 10, justifyContent: 'center', }}>
-              <Text style={{ marginLeft: 10, color: '#ffffff', fontWeight: 800, fontSize: 23, }}>Turma 101</Text>
-            </View>
-
-            <View style={{ height: 280, width: 310, marginTop: 15, borderColor: '#BEBEBE', borderWidth: 1, borderRadius: 10, backgroundColor: '#F4F4F4', }}>
-              <View style={{ height: 55, width: 310, backgroundColor: '#004AAD', borderRadius: 10, justifyContent: 'center', flexDirection: 'row', gap: 100, }}>
-                <View style={{ alignSelf: 'center', alignItems: 'center', justifyContent: 'center', width: 90, height: 50,  }}>
-                  <Text style={{ fontSize: 23, color: 'white', fontWeight: 600, }}>Música</Text>
-                  <Text style={{ fontSize: 18, color: 'white', fontWeight: 500, }}>Nancy</Text>
-                </View>
-                <View style={{ alignSelf: 'center', alignItems: 'center', justifyContent: 'center', width: 80, height: 50, }}>
-                  <Text style={{ fontSize: 16, color: 'white', fontWeight: 700, }}>25/04</Text>
-                  <Text style={{ fontSize: 14, color: 'white', fontWeight: 200, }}>08:00-10:00</Text>
-                </View>
-              </View>
-              <View style={{ marginTop: 4, gap: 10, }}>
-                <Text style={{ alignSelf: 'center', fontWeight: 600, opacity: 0.85, fontSize: 20, }}>Para casa: Partitura II</Text>
-                <Image source={{ uri: 'https://img.global.news.samsung.com/br/wp-content/uploads/2018/01/flip-samsung.png' }} style={{ alignSelf: 'center', width: 280, height: 150, borderRadius: 10, }} />
-                <Image source={{ uri: 'https://img.icons8.com/?size=256&id=26139&format=png' }} style={{ alignSelf: 'center', width: 20, height: 20, }} />
-              </View>
-            </View>
-
-            <View style={{ height: 280, width: 310, marginTop: 15, borderColor: '#BEBEBE', borderWidth: 1, borderRadius: 10, backgroundColor: '#F4F4F4', }}>
-              <View style={{ height: 55, width: 310, backgroundColor: '#004AAD', borderRadius: 10, justifyContent: 'center', flexDirection: 'row', gap: 100, }}>
-                <View style={{ alignSelf: 'center', alignItems: 'center', justifyContent: 'center', width: 90, height: 50, }}>
-                  <Text style={{ fontSize: 23, color: 'white', fontWeight: 600, }}>Arte</Text>
-                  <Text style={{ fontSize: 18, color: 'white', fontWeight: 500, }}>Kendrick</Text>
-                </View>
-                <View style={{ alignSelf: 'center', alignItems: 'center', justifyContent: 'center', width: 80, height: 50, }}>
-                  <Text style={{ fontSize: 16, color: 'white', fontWeight: 700, }}>25/04</Text>
-                  <Text style={{ fontSize: 14, color: 'white', fontWeight: 200, }}>11:00-12:00</Text>
-                </View>
-              </View>
-              <View style={{ marginTop: 4, gap: 10, }}>
-                <Text style={{ alignSelf: 'center', fontWeight: 600, opacity: 0.85, fontSize: 20, }}>Aula: Pintura II</Text>
-                <Image source={{ uri: 'https://img.global.news.samsung.com/br/wp-content/uploads/2018/01/flip-samsung.png' }} style={{ alignSelf: 'center', width: 280, height: 150, borderRadius: 10, }} />
-                <Image source={{ uri: 'https://img.icons8.com/?size=256&id=26139&format=png' }} style={{ alignSelf: 'center', width: 20, height: 20, }} />
-              </View>
-            </View>
-
-            <View style={{ height: 280, width: 310, marginTop: 15, marginBottom: 65, borderColor: '#BEBEBE', borderWidth: 1, borderRadius: 10, backgroundColor: '#F4F4F4', }}>
-              <View style={{ height: 55, width: 310, backgroundColor: '#004AAD', borderRadius: 10, justifyContent: 'center', flexDirection: 'row', gap: 100, }}>
-                <View style={{ alignSelf: 'center', alignItems: 'center', justifyContent: 'center', width: 90, height: 50, }}>
-                  <Text style={{ fontSize: 23, color: 'white', fontWeight: 600, }}>Arte</Text>
-                  <Text style={{ fontSize: 18, color: 'white', fontWeight: 500, }}>Kendrick</Text>
-                </View>
-                <View style={{ alignSelf: 'center', alignItems: 'center', justifyContent: 'center', width: 80, height: 50, }}>
-                  <Text style={{ fontSize: 16, color: 'white', fontWeight: 700, }}>25/04</Text>
-                  <Text style={{ fontSize: 14, color: 'white', fontWeight: 200, }}>11:00-12:00</Text>
-                </View>
-              </View>
-              <View style={{ marginTop: 4, gap: 10, }}>
-                <Text style={{ alignSelf: 'center', fontWeight: 600, opacity: 0.85, fontSize: 20, }}>Aula: Pintura II</Text>
-                <Image source={{ uri: 'https://img.global.news.samsung.com/br/wp-content/uploads/2018/01/flip-samsung.png' }} style={{ alignSelf: 'center', width: 280, height: 150, borderRadius: 10, }} />
-                <Image source={{ uri: 'https://img.icons8.com/?size=256&id=26139&format=png' }} style={{ alignSelf: 'center', width: 20, height: 20, }} />
-              </View>
-            </View>
-
+  const renderTaskItem = ({ item }) => {
+    return (
+      <View style={{ backgroundColor: "#E5E7EB", borderRadius: 10, marginVertical: 10, padding: 10, width: 350, }}>
+        <View style={{ flexDirection: "row", justifyContent: 'center',alignSelf: 'center', backgroundColor: "#1E40AF", padding: 10, borderRadius: 10, width: '90%', }}>
+          <Text style={styles.taskTitle}>{item.name}</Text>
+          <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', }}>
+            <Text style={styles.taskDateTime}>{item.timeSlot1}</Text>
+            <Text style={styles.taskDateTime}>{item.timeSlot2}</Text>
           </View>
-        </ScrollView>
+        </View>
+        <View style={styles.taskContent}>
+          <Text style={styles.taskSubject}>{item.subject}</Text>
+          <Image
+            style={styles.taskImage}
+            source={{ uri: 'https://img.global.news.samsung.com/br/wp-content/uploads/2018/01/flip-samsung.png' }} />
+          <Text style={styles.taskDetail}>{item.teacher_email}</Text>
+        </View>
       </View>
+    );
+  };
 
-    </>
+  const renderTaskList = () => {
+    const tasks = [];
+    Object.keys(classProfileData.timeline || {}).forEach(year => {
+      Object.keys(classProfileData.timeline[year] || {}).forEach(month => {
+        Object.keys(classProfileData.timeline[year][month] || {}).forEach(day => {
+          Object.keys(classProfileData.timeline[year][month][day] || {}).forEach(hour => {
+            const timeSlot = `${day}/${month}/  ${hour}`;
+            const timeSlot1 = `${day}/${month}`;
+            const timeSlot2 = `${hour}`;
+            const task = classProfileData.timeline[year][month][day][hour];
+            tasks.push({ ...task, timeSlot1: timeSlot1, timeSlot2: timeSlot2 });
 
+          });
+        });
+      });
+    });
+
+    return (
+      <FlatList
+        data={tasks}
+        keyExtractor={(item, index) => `${item.name}-${index}`}
+        renderItem={renderTaskItem}
+        contentContainerStyle={{ paddingHorizontal: 16, paddingVertical: 10 }}
+      />
+    );
+  };
+
+  return (
+    <ScrollView style={styles.body}>
+      <Appbar.Header style={styles.header} mode="center-aligned">
+        <Appbar.Action iconColor="#004AAD" icon="arrow-left" onPress={() => navigation.goBack()} />
+        <Appbar.Content color="#004AAD" title={'Mural'} titleStyle={{ fontWeight: 'bold' }} />
+      </Appbar.Header>
+      <View style={styles.container}>
+        <View style={{ flex: 1, alignItems: "center" }}>
+          <View
+            style={{
+              height: 35,
+              width: 340,
+              marginTop: 12,
+              backgroundColor: "#004AAD",
+              borderRadius: 10,
+              justifyContent: "center",
+            }}
+          >
+            <Text
+              style={{
+                marginLeft: 10,
+                color: "#ffffff",
+                fontWeight: 800,
+                fontSize: 23,
+              }}
+            >
+              {turma.number}
+            </Text>
+          </View>
+          {renderTaskList()}
+        </View>
+      </View>
+    </ScrollView>
   );
-};
-
-const windowWidth = Dimensions.get('window').width;
-const windowHeight = Dimensions.get('window').height;
+}
 
 const styles = StyleSheet.create({
-  container: {
+  body: {
     flex: 1,
-    backgroundColor: '#fffff',
-    minHeight: windowHeight,
-    alignItems: 'center',
   },
-  navbar: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    width: '100%',
-    paddingVertical: 20, // Aumentando o espaço para o header
-    paddingHorizontal: 20,
-    marginTop: 25,
-    borderColor: '#004AAD',
-    borderBottomWidth: 2,
+  container: {
+    justifyContent: "center",
+    alignItems: "center",
+    marginHorizontal: 16,
+    marginVertical: 16,
+  },
+  header: {
+    backgroundColor: "#fff",
+  },
+
+  taskTitle: {
+    fontSize: 20,
+    fontWeight: "bold",
+    color: "white",
+    justifyContent: 'center',
+    alignSelf: 'center',
+    marginLeft: 15,
+  },
+  taskDateTime: {
+    flex: 1,
+    fontSize: 16,
+    color: "white",
+    flexWrap: 'wrap',  
+  },
+  taskContent: {
+    
+    marginTop: 10,
+  },
+  taskSubject: {
+    fontSize: 18,
+    color: "#374151",
+    justifyContent: 'center',
+    alignSelf: 'center',
+  },
+  taskImage: {
+    justifyContent: 'center',
+    alignSelf: 'center',
+    width: '90%',
+    height: 130,
+    marginVertical: 10,
+    borderRadius: 10,
+  },
+  taskDetail: {
+    fontSize: 16,
+    color: "#6B7280",
+    justifyContent: 'center',
+    alignSelf: 'center',
   },
 });
